@@ -41,11 +41,14 @@ This must ALWAYS be printed right after a session is started and once again at t
 
 ## Session management
 
-```bash
-# Create background session (headless, no terminal)
-zellij attach my-session --create-background
+**IMPORTANT**: Always create the session before running any commands against it. All `zellij --session NAME action ...` commands will fail silently (empty output) if the session doesn't exist.
 
-# List sessions
+```bash
+# Create background session (headless, no terminal) — ALWAYS DO THIS FIRST
+zellij attach my-session --create-background
+sleep 1   # give it a moment to initialize
+
+# Verify it's running
 zellij ls
 
 # Kill a session
