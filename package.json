@@ -1,0 +1,14 @@
+{
+  "name": "@imandel/pi-zellij",
+  "version": "0.1.0",
+  "description": "Zellij skill for pi — programmatic terminal workspace control, pane targeting, streaming output, blocking commands, layouts, and helper scripts.",
+  "keywords": ["pi-package"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imandel/pi-zellij"
+  },
+  "pi": {
+    "skills": ["skills"]
+  }
+}
