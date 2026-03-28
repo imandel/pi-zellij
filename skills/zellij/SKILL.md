@@ -41,7 +41,9 @@ This must ALWAYS be printed right after a session is started and once again at t
 
 ## Session management
 
-**IMPORTANT**: Always create the session before running any commands against it. All `zellij --session NAME action ...` commands will fail silently (empty output) if the session doesn't exist.
+**IMPORTANT**:
+1. Always create the session before running any commands against it. All `zellij --session NAME action ...` commands will fail silently (empty output) if the session doesn't exist.
+2. You MUST use `attach --create-background` when running from a non-TTY context (like pi's bash tool). `zellij -s NAME --new-session-with-layout` requires a real terminal and will fail with `ENOTTY`.
 
 ```bash
 # Create background session (headless, no terminal) — ALWAYS DO THIS FIRST
@@ -113,18 +115,23 @@ zellij --session "$SESSION" action write --pane-id "$PANE_ID" 4   # Ctrl-D
 
 ### Snapshot (dump-screen)
 
+Prefer stdout capture over `--path`. The `--path` flag writes relative to the **session's cwd**, not the caller's cwd, which causes confusion.
+
 ```bash
-# Current viewport
+# Current viewport → stdout (PREFERRED)
 zellij --session "$SESSION" action dump-screen --pane-id "$PANE_ID"
 
-# Full scrollback
+# Full scrollback → stdout
 zellij --session "$SESSION" action dump-screen --pane-id "$PANE_ID" --full
 
 # With ANSI colors preserved
 zellij --session "$SESSION" action dump-screen --pane-id "$PANE_ID" --full --ansi
 
-# Save to file
+# Save to file (NOTE: path is relative to SESSION's cwd, use absolute paths)
 zellij --session "$SESSION" action dump-screen --pane-id "$PANE_ID" --full --path /tmp/output.txt
+
+# Safest: capture stdout to a file
+zellij --session "$SESSION" action dump-screen --pane-id "$PANE_ID" --full > /tmp/output.txt
 ```
 
 ### Streaming (subscribe)
